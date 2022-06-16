@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Details of campground</h2>
+    <ul>
+<h2><%= details.title %></h2>
+<li><b>Price : </b><%= details.price  %></li>
+<li><b>location : </b><%= details.location%></li>
+    </ul>
+
+    <a href="/campgrounds/<%=details._id%>/edit">edit</a>
+    <a href="/campgrounds">index</a>
+
+</body>
+</html>
