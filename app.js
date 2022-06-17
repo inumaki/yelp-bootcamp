@@ -11,7 +11,8 @@ const mongoose = require('mongoose')
 app.set('views',path.join(__dirname,'views'))
 let methodOverride= require('method-override')
 app.use(methodOverride("_method"))
-
+const ejsmate= require('ejs-mate')
+app.engine('ejs',ejsmate)
 main().catch(err => console.log(err));
 const Campground= require('./models/campground');
 //----------------------------------

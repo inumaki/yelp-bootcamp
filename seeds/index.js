@@ -41,7 +41,9 @@ const descriptor= sample(descriptors)
 const newcamp=new Campground({
 title:`${descriptor} ${place}`,
 price: `${ cities[random1000].price}`,
-location:`${cities[random1000].state} ${cities[random1000].city}`
+image:'https://source.unsplash.com/collection/483251',
+location:`${cities[random1000].state} ${cities[random1000].city}`,
+description:'lbaore em ilp terem nulhgo'
 })
 await newcamp.save()
 }
