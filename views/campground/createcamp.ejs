@@ -1,14 +1,43 @@
 <%layout('layout/boilerplate')%>
-    <h1>fill details</h1>
+    <div class="row">
+<h1 class="text-center">New campground</h1>
+<div class="col-6 offset-3">
 <form action="/campgrounds"  method="post">
-<label for="title">title</label>
-<input type="text"  name="title" placeholder="title">
-<label for=" price"> price</label>
-<input type="number"  name="price" placeholder="price">
-<label for="location"> location</label>
-<input type="text"  name="location" placeholder="location">
-<button>Save</button>
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1">@</span>
+<input type="text" class="form-control" name="title" placeholder="Title" aria-describedby="basic-addon1">
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Price(INR)</span>
+    <input type="text" name="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+   
+  </div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon3">Image Url</span>
+  <input type="text" name="image" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Location</span>
+    <input type="text" name="location" class="form-control" aria-label="Location">
+   
+  </div>
+  
+<div class="input-group mb-3">
+    <span class="input-group-text">Description</span>
+    <input type="text" name="description" class="form-control" aria-label="Description">
+   
+  </div>
+
+
+<div class="mb-3">
+<button class="btn btn-primary">Add Campground</button>
+
+</div>
 </form>
-<a href="/campgrounds">cancel</a>
 
+</div>
 
+</div>

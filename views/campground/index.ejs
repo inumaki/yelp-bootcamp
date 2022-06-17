@@ -2,11 +2,26 @@
 <%layout('layout/boilerplate')%>
 
     <h1>Welcome to campground</h1>
-    <a href="/campgrounds/new">create new</a>
-<ul>
+
+
     <% for(let i of details) { %>
-        <li ><%=i.title%></li>
-<a href="/campgrounds/<%=i._id%>">details</a>
-<hr>
+      
+        <div class="card mb-3" >
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="<%=i.image%>" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><%=i.title%></h5>
+                  <p class="card-text"><%=i.description%></p>
+                  <p class="card-text"><small class="text-muted"><%=i.location%></small></p>
+                  <a href="/campgrounds/<%=i._id%>" class="btn btn-primary">Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         <% }  %>
-    </ul>
+    

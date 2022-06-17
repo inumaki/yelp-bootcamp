@@ -1,19 +1,57 @@
 
 <%layout('layout/boilerplate')%>
-    <h1>Edit details</h1>
-    <form action="/campgrounds/<%=camp._id%>?_method=PUT"  method="post">
-    <label for="title">title</label>
-    <input type="text"  name="title" placeholder="title" value="<%=camp.title%>">
-    <label for=" price"> price</label>
-    <input type="number"  name="price" placeholder="price" value= <%=camp.price%>>
-    <label for="location"> location</label>
-    <input type="text"  name="location" placeholder="location" value="<%=camp.location%>">
-    <button>Save Changes</button>
-    </form>
-    <br><br>
-    <a href="/campgrounds/<%=camp._id%>">cancel</a>
-    <br><br>
-    <form action="/campgrounds/<%=camp._id%>?_method=DELETE" method="post">
-        <button >delete</button>
+<div class="row">
+    <h1 class="text-center">Edit campground</h1>
+    <div class="col-6 offset-3">
+        <form action="/campgrounds/<%=camp._id%>?_method=PUT"  method="post">
+  
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">@</span>
+    <input type="text" value="<%=camp.title%>" class="form-control" name="title" placeholder="Title" aria-describedby="basic-addon1">
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Price(INR)</span>
+        <input type="text" value="<%=camp.price%>" name="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+       
+      </div>
+    
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon3">Image Url</span>
+      <input type="text" name="image" value="<%=camp.image%>" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Location</span>
+        <input type="text" name="location"value="<%=camp.location%>" class="form-control" aria-label="Location">
+       
+      </div>
       
+    <div class="input-group mb-3">
+        <span class="input-group-text">Description</span>
+        <input type="text" name="description"value="<%=camp.description%>" class="form-control" aria-label="Description">
+       
+      </div>
+    
+    
+    <div class="mb-3">
+    <button class="btn btn-info text-white" >Save Changes</button>
+    
+    </div>
     </form>
+    
+    
+    <form action="/campgrounds/<%=camp._id%>" >
+        <button class="btn btn-primary mb-3">Cancel</button>
+    </form>
+    <form action="/campgrounds/<%=camp._id%>?_method=DELETE" method="post">
+        <button class="btn btn-primary mb-3">delete</button>
+    </form>
+
+
+    </div>
+    
+    </div>
+   
+   
+

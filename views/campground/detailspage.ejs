@@ -1,13 +1,32 @@
 <%layout('layout/boilerplate')%>
-    <h2>Details of campground</h2>
-    <ul>
-<h2><%= details.title %></h2>
-<img src="<%=details.image%>" alt="">
-<p><%=details.description%></p>
-<li><b>Price : </b><%= details.price  %></li>
-<li><b>location : </b><%= details.location%></li>
-    </ul>
+<div class="col-6 offset-3 mb-3" >
+    <div class="card" >
+        <img src="<%=details.image%>" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><%=details.title%></h5>
+          <p class="card-text"><%= details.location%></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">INR : <%=details.price%>/night</li>
+          <li class="list-group-item"><%=details.description%></li>
+    
+        </ul>
+        <div class="card-body">
+            <a href="/campgrounds" class="card-link btn btn-success">Index</a>
+          <a href="/campgrounds/<%=details._id%>/edit" class="card-link btn btn-info">Edit</a>
+         
+        
+          <form class="d-inline" action="/campgrounds/<%=details._id%>?_method=DELETE" method="post">
+            <button  class="btn btn-danger">Delete</button>
+        </form>
+        </div>
 
-    <a href="/campgrounds/<%=details._id%>/edit">edit</a>
-    <a href="/campgrounds">index</a>
+        <div class="card-footer text-bg-secondary">
+          </div>
 
+
+    </div>
+   
+      </div>
+    
+   
