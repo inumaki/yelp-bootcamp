@@ -3,17 +3,24 @@
 <div class="row">
     <h1 class="text-center">Edit campground</h1>
     <div class="col-6 offset-3">
-        <form action="/campgrounds/<%=camp._id%>?_method=PUT"  method="post">
+        <form novalidate action="/campgrounds/<%=camp._id%>?_method=PUT" class="check-validation" method="post">
   
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">@</span>
-    <input type="text" value="<%=camp.title%>" class="form-control" name="title" placeholder="Title" aria-describedby="basic-addon1">
-    </div>
+    <input type="text" value="<%=camp.title%>" class="form-control" name="title" required placeholder="Title" aria-describedby="basic-addon1">
+    <div id="validationServer05Feedback" class="invalid-feedback">
+      Please provide a title
+    </div>  
+  
+  
+  </div>
     
     <div class="input-group mb-3">
         <span class="input-group-text">Price(INR)</span>
-        <input type="text" value="<%=camp.price%>" name="price" class="form-control" aria-label="Amount (to the nearest dollar)">
-       
+        <input type="text" value="<%=camp.price%>" required name="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <div id="validationServer05Feedback" class="invalid-feedback">
+          Enter the price
+        </div> 
       </div>
     
     <div class="input-group mb-3">

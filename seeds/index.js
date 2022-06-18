@@ -40,7 +40,7 @@ const place= sample(places)
 const descriptor= sample(descriptors)
 const newcamp=new Campground({
 title:`${descriptor} ${place}`,
-price: `${ cities[random1000].price}`,
+price:random1000,
 image:'https://source.unsplash.com/collection/483251',
 location:`${cities[random1000].state} ${cities[random1000].city}`,
 description:'lbaore em ilp terem nulhgo'
