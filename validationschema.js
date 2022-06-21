@@ -9,3 +9,9 @@ module.exports.campgroundSchema = joi.object({
     location:joi.string().required(),
     description:joi.string()
       })
+
+      module.exports.reviewSchema= joi.object({
+
+body:joi.string().min(1).required(),
+rating:joi.number().min(0).required()
+      })

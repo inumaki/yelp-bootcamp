@@ -1,8 +1,9 @@
 
 const express= require('express');
-const {campgroundSchema}= require('./validationschema.js')
+const {campgroundSchema,reviewSchema}= require('./validationschema.js')
 const app= express();
 const path =require('path');
+
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 const {v4:uuid}= require('uuid')
@@ -17,8 +18,11 @@ const ejsmate= require('ejs-mate')
 app.engine('ejs',ejsmate)
 main().catch(err => console.log(err));
 const Campground= require('./models/campground');
+
 const  catchAsync= require('./utils/catchAsync')
 const  expressError= require('./utils/expressError')
+const review= require('./models/review')
+
 //----------------------------------
 app.listen(3000,()=>{
 console.log('started listening at port 3000')
@@ -43,6 +47,23 @@ const  validateform= (req,res,next)=>
 
 
 }
+//---------------------------------------------------------
+const validateReview= (req,res,next)=>{
+console.log(req.body)
+  const {error}= reviewSchema.validate(req.body.review)
+
+  if(error)
+  {
+    const msg= error.details.map(el=>el.message).join(', ')
+    throw new expressError(`review: ${msg}`,400)
+  }
+  else
+  {
+    next()
+  }
+  }
+
+
 //------------------------------------------------------------------------
 
 async function main() 
@@ -97,6 +118,19 @@ res.redirect(`/campgrounds/${camp._id}`)
 
 
 }))
+//---------------------
+app.delete('/campgrounds/:id/reviews/:reviewId/',async(req,res)=>{
+  
+  const{id, reviewId}= req.params;
+  await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
+  const result=await  review.findByIdAndDelete(reviewId);
+
+res.redirect(`/campgrounds/${id}`)
+
+})
+
+
+
 //---------------------to edit 
 
 app.get('/campgrounds/:id/edit',catchAsync(async(req,res)=>{
@@ -132,18 +166,41 @@ res.redirect('/campgrounds/')
 app.get('/campgrounds/:id',catchAsync(async(req,res)=>{
 
 const {id}= req.params;
-const details = await Campground.findById(id)
+const details = await Campground.findById(id).populate('reviews')
 res.render('campground/detailspage' ,{details})
 
 
 }))
+
+//-----------------------------------------------
+
+app.post("/campgrounds/:id/review",validateReview,catchAsync(async(req,res)=>{
+
+const {id} = req.params
+const {rating ,body }= req.body.review
+if(!body)
+return 
+const newreview= await new review({body,rating})
+
+let cmpground = await Campground.findById(id)
+ await cmpground.reviews.push(newreview)
+await cmpground.save()
+await newreview.save()
+
+res.redirect(`/campgrounds/${id}`)
+}))
+
 //-----------------------------------------
 app.all('*',(req,res,next)=>{
-
 next(new( expressError('Page not found ',404)))
 
 
 })
+//-----------------------------------------
+
+//-----------------------------------------
+
+
 
 
 

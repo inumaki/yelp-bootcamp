@@ -1,6 +1,7 @@
-<%layout('layout/boilerplate')%>
-<div class="col-6 offset-3 mb-3" >
-    <div class="card" >
+<%layout('layout/boilerplate.ejs')%>
+<div class="row">
+   
+      <div class="col card" style="border:10px">
         <img src="<%=details.image%>" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title"><%=details.title%></h5>
@@ -9,7 +10,6 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">INR : <%=details.price%>/night</li>
           <li class="list-group-item"><%=details.description%></li>
-    
         </ul>
         <div class="card-body">
             <a href="/campgrounds" class="card-link btn btn-success">Index</a>
@@ -20,13 +20,46 @@
             <button  class="btn btn-danger">Delete</button>
         </form>
         </div>
+</div>
 
-        <div class="card-footer text-bg-secondary">
-          </div>
+<div class="col mb-1"  id= "reviewright" >
+
+  <form novalidate class="check-validation" action="/campgrounds/<%=details._id%>/review" method="post" class="mb-2">
+    <div class="mb-3">
+      <label for="rating" class="form-label">Rating</label>
+      <input type="range" name=review[rating] class="form-range" min="0" max="5" id="rating">
+  
+  
+  <textarea class="form-control validated-form" placeholder="review" name="review[body]" required  id="reviewbody" cols="28" rows="2" ></textarea>
+  </div>
+  <button class="btn btn-primary mb-1"  >Add review</button>
+  </form>
+<hr>
+<% for(let i of details.reviews){%>
+  <div class="card mb-1" style="width:auto;">
+    <div class="card-body">
+  <h6 class="card-subtitle mb-2 text-muted">Rating :<%=i.rating%></h6>
+  <p class="card-text"><%=i.body%></p>
+  <form action="/campgrounds/<%=details._id%>/reviews/<%=i._id%>/?_method=DELETE"  method= "post">
+ <button class="btn btn-sm btn-danger">Delete</button>
+ </form>
+</div>
+</div>
+ 
+<%}%>
+
+</div> 
 
 
     </div>
    
-      </div>
+     
     
+ 
    
+
+    
+
+
+
+  
