@@ -22,186 +22,38 @@ const Campground= require('./models/campground');
 const  catchAsync= require('./utils/catchAsync')
 const  expressError= require('./utils/expressError')
 const review= require('./models/review')
-
+const campgrounds= require('./routes/campground')
+const reviewrouter= require('./routes/review')
 //----------------------------------
 app.listen(3000,()=>{
 console.log('started listening at port 3000')
 //-----------------------------------------------
 })
 //-------------------------------------------------------
-
-const  validateform= (req,res,next)=>
-{
-    
-    const {error}= campgroundSchema.validate(req.body)
-   
-    if(error)
-    {
-      const msg= error.details.map(el=>el.message).join(', ')
-      throw new expressError(msg,400)
-    }
-    else
-    {
-      next()
-    }
-
-
-}
-//---------------------------------------------------------
-const validateReview= (req,res,next)=>{
-console.log(req.body)
-  const {error}= reviewSchema.validate(req.body.review)
-
-  if(error)
-  {
-    const msg= error.details.map(el=>el.message).join(', ')
-    throw new expressError(`review: ${msg}`,400)
-  }
-  else
-  {
-    next()
-  }
-  }
-
-
-//------------------------------------------------------------------------
+app.use("/campgrounds",campgrounds)
+app.use("/campgrounds/:id/reviews/",reviewrouter)
 
 async function main() 
 {
 
-    await mongoose.connect('mongodb://localhost:27017/yelp-camp')
-     console.log('connected')
+  await mongoose.connect('mongodb://localhost:27017/yelp-camp')
+   console.log('connected')
 }
-
-
-
-  //-----------------------------------------------
-/*const db = mongoose.connection
-db.on("error",console.error.bind(console,"connection error:"));
-db.once('open',()=>{
-
-console.log("Database Connected")
-
-})*/
-
-
-  
 //----------------------
 app.get('/',(req,res)=>{
 
-res.render('home.ejs');
-
-})
-
-//-----------------------show all campgrounds title
-app.get('/campgrounds',async(req,res)=>{
-
-const details= await Campground.find({})
-res.render('campground/index',{details})
-
-})
-//-----------------------to create new campground
-app.get('/campgrounds/new', async(req,res)=>{
-
-res.render('campground/createcamp')
-
-})
-
-//----------------------getting the post request from form 
-app.post('/campgrounds',validateform,catchAsync(async(req,res,next)=>{
-
-const camp= await new Campground(req.body)
-await camp.save()
-
-res.redirect(`/campgrounds/${camp._id}`)
-
-
-
-}))
-//---------------------
-app.delete('/campgrounds/:id/reviews/:reviewId/',async(req,res)=>{
+  res.render('home.ejs');
   
-  const{id, reviewId}= req.params;
-  await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
-  const result=await  review.findByIdAndDelete(reviewId);
-
-res.redirect(`/campgrounds/${id}`)
-
-})
-
-
-
-//---------------------to edit 
-
-app.get('/campgrounds/:id/edit',catchAsync(async(req,res)=>{
-
-const {id}= req.params
-const camp= await Campground.findById(id)
-
-res.render('campground/editcamp',{camp})
-
-}))
-//----------------put request to update the camp
-app.put('/campgrounds/:id',validateform, catchAsync(async(req,res)=>{
-
-  const {id}= req.params
+  })
   
 
-  const camp=  await Campground.findByIdAndUpdate(id,req.body,{new:true})
-  res.redirect(`/campgrounds/${id}`)
   
-  }))
-//----------------deleting a campground
-app.delete('/campgrounds/:id',catchAsync(async(req,res)=>{
-
-  const {id} =req.params
-await Campground.findByIdAndDelete(id)
-
-res.redirect('/campgrounds/')
-}))
-
-
-
-//--------------------------------------to show details
-app.get('/campgrounds/:id',catchAsync(async(req,res)=>{
-
-const {id}= req.params;
-const details = await Campground.findById(id).populate('reviews')
-res.render('campground/detailspage' ,{details})
-
-
-}))
-
-//-----------------------------------------------
-
-app.post("/campgrounds/:id/review",validateReview,catchAsync(async(req,res)=>{
-
-const {id} = req.params
-const {rating ,body }= req.body.review
-if(!body)
-return 
-const newreview= await new review({body,rating})
-
-let cmpground = await Campground.findById(id)
- await cmpground.reviews.push(newreview)
-await cmpground.save()
-await newreview.save()
-
-res.redirect(`/campgrounds/${id}`)
-}))
-
-//-----------------------------------------
 app.all('*',(req,res,next)=>{
 next(new( expressError('Page not found ',404)))
 
 
 })
 //-----------------------------------------
-
-//-----------------------------------------
-
-
-
 
 
 //-----------------------------------------
