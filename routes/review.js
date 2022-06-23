@@ -30,7 +30,7 @@ const validateReview= (req,res,next)=>{
     const{id, reviewId}= req.params;
     await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
     const result=await  review.findByIdAndDelete(reviewId);
-   
+    req.flash('success',"Deleted your review")
   res.redirect(`/campgrounds/${id}`)
   
   })
@@ -49,7 +49,7 @@ let cmpground = await Campground.findById(id)
 await cmpground.reviews.push(newreview)
 await cmpground.save()
 await newreview.save()
-
+req.flash('success',"Succesfully added a review")
 res.redirect(`/campgrounds/${id}`)
 }))
 

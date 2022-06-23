@@ -16,15 +16,39 @@ let methodOverride= require('method-override')
 app.use(methodOverride("_method"))
 const ejsmate= require('ejs-mate')
 app.engine('ejs',ejsmate)
+app.use(express.static(path.join(__dirname,'public')))
 main().catch(err => console.log(err));
 const Campground= require('./models/campground');
-
 const  catchAsync= require('./utils/catchAsync')
 const  expressError= require('./utils/expressError')
 const review= require('./models/review')
 const campgrounds= require('./routes/campground')
 const reviewrouter= require('./routes/review')
+const session = require('express-session')
+const flash= require('connect-flash')
 //----------------------------------
+const sessionConfig ={
+  secret:'thisissecret',
+  resave:false,
+  saveUninitialized:true,
+  cookie:{
+  expires:Date.now()+1000*60*60*24*7,
+  maxAge:1000*60*60*24*7,
+  httpOnly:true
+
+  }
+
+}
+app.use(session(sessionConfig))
+app.use(flash())
+app.use((req,res,next)=>{
+
+res.locals.success= req.flash('success')
+res.locals.error= req.flash('error')
+next()
+})
+
+
 app.listen(3000,()=>{
 console.log('started listening at port 3000')
 //-----------------------------------------------
