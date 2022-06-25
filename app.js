@@ -2,8 +2,7 @@
 const express= require('express');
 const {campgroundSchema,reviewSchema}= require('./validationschema.js')
 const app= express();
-const path =require('path');
-
+const path =require('path')
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 const {v4:uuid}= require('uuid')
@@ -26,6 +25,10 @@ const campgrounds= require('./routes/campground')
 const reviewrouter= require('./routes/review')
 const session = require('express-session')
 const flash= require('connect-flash')
+const passport= require('passport')
+const localpassport= require('passport-local')
+const User= require('./models/user')
+const user_router=require('./routes/user') 
 //----------------------------------
 const sessionConfig ={
   secret:'thisissecret',
@@ -56,7 +59,14 @@ console.log('started listening at port 3000')
 //-------------------------------------------------------
 app.use("/campgrounds",campgrounds)
 app.use("/campgrounds/:id/reviews/",reviewrouter)
-
+app.use("/",user_router)
+//-------------------------------------------passport-------
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new localpassport(User.authenticate()))
+passport.serializeUser(User.serializeUser());//session support
+passport.deserializeUser(User.deserializeUser());
+//-------------------------------------------
 async function main() 
 {
 
