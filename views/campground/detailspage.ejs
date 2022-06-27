@@ -10,20 +10,21 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item">INR : <%=details.price%>/night</li>
           <li class="list-group-item"><%=details.description%></li>
+          <li class="list-group-item">Submitted by: <%=details.author.username%></li>
         </ul>
         <div class="card-body">
-            <a href="/campgrounds" class="card-link btn btn-success">Index</a>
+            
+            <% if(currentuser && details.author.equals(currentuser._id)){%>
           <a href="/campgrounds/<%=details._id%>/edit" class="card-link btn btn-info">Edit</a>
-         
-        
           <form class="d-inline" action="/campgrounds/<%=details._id%>?_method=DELETE" method="post">
             <button  class="btn btn-danger">Delete</button>
         </form>
+        <%}%>
         </div>
 </div>
 
 <div class="col mb-1"  id= "reviewright" >
-
+<% if(currentuser){%>
   <form novalidate class="check-validation" action="/campgrounds/<%=details._id%>/reviews" method="post" class="mb-2">
     <div class="mb-3">
       <label for="rating" class="form-label">Rating</label>
@@ -34,18 +35,21 @@
   </div>
   <button class="btn btn-primary mb-1"  >Add review</button>
   </form>
+  <%}%>
 <hr>
 <% for(let i of details.reviews){%>
   <div class="card mb-1" style="width:auto;">
     <div class="card-body">
-  <h6 class="card-subtitle mb-2 text-muted">Rating :<%=i.rating%></h6>
-  <p class="card-text"><%=i.body%></p>
+      <h6 class="card-subtitle mb-1 text-muted"><%=i.author.username%></h6>
+      <p class="card-text">Ratings: <%=i.rating%></p>
+      <p class="card-text"><%=i.body%></p>
+  <%if(currentuser && i.author.equals(currentuser._id)){%>
   <form action="/campgrounds/<%=details._id%>/reviews/<%=i._id%>/?_method=DELETE"  method= "post">
  <button class="btn btn-sm btn-danger">Delete</button>
  </form>
+ <%}%>
 </div>
 </div>
- 
 <%}%>
 
 </div> 

@@ -26,7 +26,7 @@ const reviewrouter= require('./routes/review')
 const session = require('express-session')
 const flash= require('connect-flash')
 const passport= require('passport')
-const localpassport= require('passport-local')
+const localpassport= require('passport-local').Strategy
 const User= require('./models/user')
 const user_router=require('./routes/user') 
 //----------------------------------
@@ -37,15 +37,24 @@ const sessionConfig ={
   cookie:{
   expires:Date.now()+1000*60*60*24*7,
   maxAge:1000*60*60*24*7,
-  httpOnly:true
+  httpOnly:true,
 
   }
-
 }
 app.use(session(sessionConfig))
 app.use(flash())
-app.use((req,res,next)=>{
+//-------------------------------------------passport-------
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new localpassport(User.authenticate()))
+passport.serializeUser(User.serializeUser());//session support
+passport.deserializeUser(User.deserializeUser());
+//-------------------------------------------
 
+app.use((req,res,next)=>{
+  //session.save()
+ // console.log("app.js= ",req.session.storeUrl)
+  res.locals.currentuser= req.user
 res.locals.success= req.flash('success')
 res.locals.error= req.flash('error')
 next()
@@ -60,13 +69,7 @@ console.log('started listening at port 3000')
 app.use("/campgrounds",campgrounds)
 app.use("/campgrounds/:id/reviews/",reviewrouter)
 app.use("/",user_router)
-//-------------------------------------------passport-------
-app.use(passport.initialize())
-app.use(passport.session())
-passport.use(new localpassport(User.authenticate()))
-passport.serializeUser(User.serializeUser());//session support
-passport.deserializeUser(User.deserializeUser());
-//-------------------------------------------
+
 async function main() 
 {
 
@@ -99,3 +102,4 @@ const errobj= {m:message,e:statusCode}
  // res.send   (`oops error ${statusCode}  occured${message }`)
 
 })
+ 

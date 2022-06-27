@@ -8,6 +8,10 @@ const  expressError= require('../utils/expressError')
 const review= require('../models/review')
 const path =require('path');
 app.set('views',path.join(__dirname,'views'))
+const isloggedin= require('../middleware')
+//------------------------------------------------
+
+//-----------------------------------------------------
 
 const validateReview= (req,res,next)=>{
     console.log(req.body)
@@ -25,9 +29,15 @@ const validateReview= (req,res,next)=>{
     }
   //---------------------
 
-  reviewrouter.delete('/:reviewId',async(req,res)=>{
+  reviewrouter.delete('/:reviewId',isloggedin,async(req,res)=>{
       
     const{id, reviewId}= req.params;
+const cmp = await review.findById(reviewId)
+if(!cmp.author.equals(req.user._id))
+{
+req.flash('error','you cannot delete this review')
+ return  res.redirect(`/campgrounds/${id}`)
+}
     await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
     const result=await  review.findByIdAndDelete(reviewId);
     req.flash('success',"Deleted your review")
@@ -37,14 +47,13 @@ const validateReview= (req,res,next)=>{
   
 //---------------------------------------------------------
 
-reviewrouter.post("",validateReview,catchAsync(async(req,res)=>{
+reviewrouter.post("",isloggedin ,validateReview,catchAsync(async(req,res)=>{
    
 const {id} = req.params
 const {rating ,body }= req.body.review
-if(!body)
-return 
-const newreview= await new review({body,rating})
 
+const newreview= await new review({body,rating})
+newreview.author= req.user._id
 let cmpground = await Campground.findById(id)
 await cmpground.reviews.push(newreview)
 await cmpground.save()

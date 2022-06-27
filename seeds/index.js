@@ -43,7 +43,8 @@ title:`${descriptor} ${place}`,
 price:random1000,
 image:'https://source.unsplash.com/collection/483251',
 location:`${cities[random1000].state} ${cities[random1000].city}`,
-description:'lbaore em ilp terem nulhgo'
+description:'lbaore em ilp terem nulhgo',
+author:"62b76efdab57b6b8b57ed660"
 })
 await newcamp.save()
 }

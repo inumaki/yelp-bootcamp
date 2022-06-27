@@ -8,8 +8,10 @@ const  expressError= require('../utils/expressError')
 const review= require('../models/review')
 const path =require('path');
 app.set('views',path.join(__dirname,'views'))
+const isloggedin = require('../middleware');
+const { populate } = require('../models/review');
 //-----------------------show all campgrounds title
-const  validateform= (req,res,next)=>
+validateform= (req,res,next)=>
 {
     
     const {error}= campgroundSchema.validate(req.body)
@@ -23,35 +25,33 @@ const  validateform= (req,res,next)=>
     {
       next()
     }
-
-
 }
+isAuthor= async(req,res,next)=>{
+  const {id}= req.params;
+  const camp = await Campground.findById(id)
+    if(!camp.author.equals(req.user._id)){
+      req.flash('error','you do not have premission to do that')
+      return res.redirect('/campgrounds')}
+  next()
+  }
+
 
 router.get('/',async(req,res)=>{
-
     const details= await Campground.find({})
     res.render('campground/index',{details})
     
     })
     //-----------------------to create new campground
-router.get('/new', async(req,res)=>{
-    
- 
+router.get('/new',isloggedin, async(req,res)=>{
     res.render('campground/createcamp')
-    
     })
 //----------------------getting the post request from form 
-router.post('/',validateform,catchAsync(async(req,res,next)=>{
-
- 
+router.post('/',isloggedin,validateform,catchAsync(async(req,res,next)=>{
     const camp= await new Campground(req.body)
+    camp.author= req.user._id
     req.flash('success',"Succesfully made a campground")
-    await camp.save()
-   
+    await camp.save()  
     res.redirect(`campgrounds/${camp._id}`)
-    
-    
-    
     }))
  
     //---------------------to edit 
@@ -60,29 +60,34 @@ router.post('/',validateform,catchAsync(async(req,res,next)=>{
     
     const {id}= req.params
     const camp= await Campground.findById(id)
-    if(!details)
+    if(!camp)
     {
     req.flash('error','Cannot find the requested campground')
     return  res.redirect('/campgrounds/')
     }
+    
     res.render('campground/editcamp',{camp})
     
     }))
     //----------------put request to update the camp
 
-    router.put('/:id',validateform, catchAsync(async(req,res)=>{
+    router.put('/:id',isloggedin,isAuthor,validateform, catchAsync(async(req,res)=>{
     
       const {id}= req.params
- 
       const camp=  await Campground.findByIdAndUpdate(id,req.body,{new:true})
       req.flash('success',"Succesfully updated a campground")
       res.redirect(`/campgrounds/${id}`)
-      
+
       }))
     //----------------deleting a campground
-   router.delete('/:id',catchAsync(async(req,res)=>{
+   router.delete('/:id',isloggedin,isAuthor,catchAsync(async(req,res)=>{
     
       const {id} =req.params
+      const storecamp= await Campground.findById(id)
+      if(!storecamp.author.equals(req.user._id)){
+      req.flash('error','you do not have premission to do that')
+      res.redirect('/campgrounds')}
+
     await Campground.findByIdAndDelete(id)
     req.flash('success',"Succesfully deleted a campground")
     res.redirect('/campgrounds/')
@@ -92,19 +97,15 @@ router.post('/',validateform,catchAsync(async(req,res,next)=>{
 router.get('/:id',catchAsync(async(req,res)=>{
 
     const {id}= req.params;
-    const details = await Campground.findById(id).populate('reviews')
+    const details = await  Campground.findById(id).populate(
+     { path: 'reviews',populate:{path:'author'}}).populate('author')
+
     if(!details)
     {
     req.flash('error','Cannot find the requested campground')
     return  res.redirect('/campgrounds/')
     }
     res.render('campground/detailspage' ,{details})
-    
-    
     }))
-    
     //-----------------------------------------------
-
-
-
     module.exports=  router;
