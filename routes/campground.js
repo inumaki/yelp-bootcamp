@@ -49,42 +49,15 @@ router.post('/',isloggedin,validateform,catchAsync(campgroundobj.makecamp))
     //---------------------to edit 
     
    router.get('/:id/edit',catchAsync(campgroundobj.updatecamp))
-    //----------------put request to update the camp
-    router.put('/:id',isloggedin,isAuthor,validateform, catchAsync(async(req,res)=>{
     
-      const {id}= req.params
-      const camp=  await Campground.findByIdAndUpdate(id,req.body,{new:true})
-      req.flash('success',"Succesfully updated a campground")
-      res.redirect(`/campgrounds/${id}`)
+   //----------------put request to update the camp
 
-      }))
+    router.put('/:id',isloggedin,isAuthor,validateform, catchAsync(campgroundobj.updatecampput))
+
     //----------------deleting a campground
-   router.delete('/:id',isloggedin,isAuthor,catchAsync(async(req,res)=>{
-    
-      const {id} =req.params
-      const storecamp= await Campground.findById(id)
-      if(!storecamp.author.equals(req.user._id)){
-      req.flash('error','you do not have premission to do that')
-      res.redirect('/campgrounds')}
-
-    await Campground.findByIdAndDelete(id)
-    req.flash('success',"Succesfully deleted a campground")
-    res.redirect('/campgrounds/')
-    }))
+   router.delete('/:id',isloggedin,isAuthor,catchAsync(campgroundobj.delcamp))
     
 //--------------------------------------to show details
-router.get('/:id',catchAsync(async(req,res)=>{
-
-    const {id}= req.params;
-    const details = await  Campground.findById(id).populate(
-     { path: 'reviews',populate:{path:'author'}}).populate('author')
-
-    if(!details)
-    {
-    req.flash('error','Cannot find the requested campground')
-    return  res.redirect('/campgrounds/')
-    }
-    res.render('campground/detailspage' ,{details})
-    }))
+router.get('/:id',catchAsync(campgroundobj.laodcamp))
     //-----------------------------------------------
     module.exports=  router;
