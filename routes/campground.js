@@ -6,8 +6,6 @@ const {campgroundSchema,reviewSchema}= require('../validationschema.js')
 const Campground= require('../models/campground');
 const  expressError= require('../utils/expressError')
 const review= require('../models/review')
-const path =require('path');
-app.set('views',path.join(__dirname,'views'))
 const isloggedin = require('../middleware');
 const { populate } = require('../models/review');
 const campgroundobj = require('../controllers/campgrounds')
