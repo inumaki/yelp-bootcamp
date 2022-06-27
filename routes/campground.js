@@ -10,6 +10,7 @@ const path =require('path');
 app.set('views',path.join(__dirname,'views'))
 const isloggedin = require('../middleware');
 const { populate } = require('../models/review');
+const campgroundobj = require('../controllers/campgrounds')
 //-----------------------show all campgrounds title
 validateform= (req,res,next)=>
 {
@@ -34,43 +35,21 @@ isAuthor= async(req,res,next)=>{
       return res.redirect('/campgrounds')}
   next()
   }
+//-----------------to load all campgrounds
+router.get('/',catchAsync(campgroundobj.index))
 
-
-router.get('/',async(req,res)=>{
-    const details= await Campground.find({})
-    res.render('campground/index',{details})
-    
-    })
     //-----------------------to create new campground
 router.get('/new',isloggedin, async(req,res)=>{
     res.render('campground/createcamp')
     })
-//----------------------getting the post request from form 
-router.post('/',isloggedin,validateform,catchAsync(async(req,res,next)=>{
-    const camp= await new Campground(req.body)
-    camp.author= req.user._id
-    req.flash('success',"Succesfully made a campground")
-    await camp.save()  
-    res.redirect(`campgrounds/${camp._id}`)
-    }))
+
+    //----------------------getting the post request from form 
+router.post('/',isloggedin,validateform,catchAsync(campgroundobj.makecamp))
  
     //---------------------to edit 
     
-   router.get('/:id/edit',catchAsync(async(req,res)=>{
-    
-    const {id}= req.params
-    const camp= await Campground.findById(id)
-    if(!camp)
-    {
-    req.flash('error','Cannot find the requested campground')
-    return  res.redirect('/campgrounds/')
-    }
-    
-    res.render('campground/editcamp',{camp})
-    
-    }))
+   router.get('/:id/edit',catchAsync(campgroundobj.updatecamp))
     //----------------put request to update the camp
-
     router.put('/:id',isloggedin,isAuthor,validateform, catchAsync(async(req,res)=>{
     
       const {id}= req.params
