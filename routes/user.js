@@ -30,7 +30,7 @@ user_router.get('/login',(req,res)=>{
 
     res.render('users/login')
 })
-//--------------------------------
+
 user_router.post('/login',passport.authenticate('local',{failureFlash:true,
     failureRedirect:'/login'}),catchAsync(userobj.authenticateuser))
    

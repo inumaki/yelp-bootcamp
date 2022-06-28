@@ -33,29 +33,35 @@ isAuthor= async(req,res,next)=>{
       return res.redirect('/campgrounds')}
   next()
   }
-//-----------------to load all campgrounds
-router.get('/',catchAsync(campgroundobj.index))
 
-    //-----------------------to create new campground
-router.get('/new',isloggedin, async(req,res)=>{
+  router.get('/new',isloggedin, async(req,res)=>{
     res.render('campground/createcamp')
     })
 
-    //----------------------getting the post request from form 
-router.post('/',isloggedin,validateform,catchAsync(campgroundobj.makecamp))
+
+
+//-----------------to load all campgrounds
+router.route('/')
+.get(catchAsync(campgroundobj.index))
+.post(isloggedin,validateform,catchAsync(campgroundobj.makecamp));
+
+
+    //-----------------------to create new campground
+
+    
+
  
     //---------------------to edit 
     
-   router.get('/:id/edit',catchAsync(campgroundobj.updatecamp))
+
     
    //----------------put request to update the camp
+router.route('/:id') 
+.put(isloggedin,isAuthor,validateform, catchAsync(campgroundobj.updatecampput))
+   .delete(isloggedin,isAuthor,catchAsync(campgroundobj.delcamp))
+    .get(catchAsync(campgroundobj.laodcamp));
 
-    router.put('/:id',isloggedin,isAuthor,validateform, catchAsync(campgroundobj.updatecampput))
 
-    //----------------deleting a campground
-   router.delete('/:id',isloggedin,isAuthor,catchAsync(campgroundobj.delcamp))
-    
-//--------------------------------------to show details
-router.get('/:id',catchAsync(campgroundobj.laodcamp))
-    //-----------------------------------------------
+router.get('/:id/edit',catchAsync(campgroundobj.updatecamp))
+//-----------------------------------------------
     module.exports=  router;
