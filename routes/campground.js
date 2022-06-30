@@ -9,6 +9,9 @@ const review= require('../models/review')
 const isloggedin = require('../middleware');
 const { populate } = require('../models/review');
 const campgroundobj = require('../controllers/campgrounds')
+const multer  = require('multer')
+const {storage}= require('../cloudinary')
+const upload = multer({storage})
 //-----------------------show all campgrounds title
 validateform= (req,res,next)=>
 {
@@ -34,6 +37,9 @@ isAuthor= async(req,res,next)=>{
   next()
   }
 
+
+
+
   router.get('/new',isloggedin, async(req,res)=>{
     res.render('campground/createcamp')
     })
@@ -43,7 +49,9 @@ isAuthor= async(req,res,next)=>{
 //-----------------to load all campgrounds
 router.route('/')
 .get(catchAsync(campgroundobj.index))
-.post(isloggedin,validateform,catchAsync(campgroundobj.makecamp));
+.post(isloggedin,upload.array('image'),validateform,catchAsync(campgroundobj.makecamp))
+
+
 
 
     //-----------------------to create new campground
@@ -57,7 +65,7 @@ router.route('/')
     
    //----------------put request to update the camp
 router.route('/:id') 
-.put(isloggedin,isAuthor,validateform, catchAsync(campgroundobj.updatecampput))
+.put(isloggedin,isAuthor,upload.array('image'),validateform, catchAsync(campgroundobj.updatecampput))
    .delete(isloggedin,isAuthor,catchAsync(campgroundobj.delcamp))
     .get(catchAsync(campgroundobj.laodcamp));
 

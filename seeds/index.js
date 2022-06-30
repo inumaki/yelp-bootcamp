@@ -41,8 +41,24 @@ const descriptor= sample(descriptors)
 const newcamp=new Campground({
 title:`${descriptor} ${place}`,
 price:random1000,
-image:'https://source.unsplash.com/collection/483251',
 location:`${cities[random1000].state} ${cities[random1000].city}`,
+images:[
+  {
+    filename: 'Yelpcamp/y0weca3syiuvnavjzk5n',
+    url: 'https://res.cloudinary.com/dksndvyy5/image/upload/v1656620434/Yelpcamp/y0weca3syiuvnavjzk5n.jpg',
+  
+  },
+  {
+    filename: 'Yelpcamp/a0msqox6ifxefpoegi7p',
+    url: 'https://res.cloudinary.com/dksndvyy5/image/upload/v1656620434/Yelpcamp/a0msqox6ifxefpoegi7p.jpg',
+   
+  },
+  {
+    filename: 'Yelpcamp/kbozmiac1r2tgmo6kntq',
+    url: 'https://res.cloudinary.com/dksndvyy5/image/upload/v1656620435/Yelpcamp/kbozmiac1r2tgmo6kntq.jpg',
+    
+  }
+],
 description:'lbaore em ilp terem nulhgo',
 author:"62b76efdab57b6b8b57ed660"
 })

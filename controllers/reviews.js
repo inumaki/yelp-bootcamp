@@ -16,8 +16,9 @@ req.flash('error','you cannot delete this review')
   res.redirect(`/campgrounds/${id}`)
   
   }
+
   module.exports.addreview= async(req,res)=>{
-   
+    
     const {id} = req.params
     const {rating ,body }= req.body.review
     

@@ -1,8 +1,13 @@
+if(process.env.NODE_ENV !="production")
+{
+  require('dotenv').config()
+}
 
 const express= require('express');
 const {campgroundSchema,reviewSchema}= require('./validationschema.js')
 const app= express();
 const path =require('path')
+
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 const {v4:uuid}= require('uuid')
@@ -29,6 +34,8 @@ const passport= require('passport')
 const localpassport= require('passport-local').Strategy
 const User= require('./models/user')
 const user_router=require('./routes/user') 
+const multer  = require('multer')
+
 //----------------------------------
 const sessionConfig ={
   secret:'thisissecret',
