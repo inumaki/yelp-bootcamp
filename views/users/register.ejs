@@ -1,23 +1,42 @@
 <%layout('layout/boilerplate')%>
-<div class="col-6 offset-3">
-<form action="/register" novalidate method="post"  class="check-validation">
-  <div class="form-group mb-2 mt-5">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" required id="username"name="username" placeholder="Enter username">
+<div class="container d-flex justify-content-center align-items-center mt-2 mb-2">
+  <div class="row">
+      <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+          <div class="card shadow">
+              <img src="../mainpageimage.jpg"
+                  alt="" class="card-img-top" />
+              <div class="card-body">
+                  <form action="/register" method="POST" class="validated-form" novalidate>
+                      <div class="mb-2">
+                          <label class="form-label " for="username" >Username</label>
+                          <input class="form-control" type="text" id="username" name="username" autofocus required>
+                          
+                      </div>
+                      <div class=" mb-2 ">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" required id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <div class="valid-feedback">
+                          Looks good!
+                      </div>
+                      </div>
+                      <div class="mb-1">
+                          <label class="form-label" for="password">Password</label>
+                          <input class="form-control" type="password" id="password" name="password" required>
+                          <div class="valid-feedback">
+                              Looks good!
+                          </div>
+                      </div>
+                      <button class="btn btn-success btn-block">Sign Up</button>
+                      <a href="/login" class="btn  btn-success ">Log In</a>
+                  </form>
+                
+              </div>
+          </div>
+      </div>
   </div>
-    <div class="form-group mb-2 ">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" required id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-  
-    <div class="form-group mb-2">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" required id="password"name="password" placeholder="Password">
-    </div>
- 
-    <button type="submit" class="btn btn-success">Sign up</button>
-      <a href="/login" class="btn btn-success ">Login</a>
-  </form>
 </div>
+
+
+
 

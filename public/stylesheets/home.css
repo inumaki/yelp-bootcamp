@@ -1,0 +1,54 @@
+*{
+    margin:0px;
+  
+}
+body
+
+{
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+    url("../mainpageimage.jpg");
+    background-size:cover;
+    background-position: center;
+   
+    height: 100vh;
+}
+.cover-container
+{
+
+    max-width:90vw;
+}
+.nav-link
+{
+
+padding:0.25rem 0.25rem;
+margin-left:1rem;
+font-weight: 400;
+color:lightgreen;
+border-bottom: 1px solid transparent;
+
+
+}
+
+.nav-link:hover
+{
+color:blueviolet;
+border-bottom-color:darkslateblue;
+
+border-width: 1px;
+}
+.campbtn
+{
+    color:lightgreen;
+   
+}
+.campbtn:hover
+{
+    color:blueviolet;
+    border-bottom-color:darkslateblue;
+
+}
+.footerc
+{
+     padding-top: 5rem;
+}

@@ -2,7 +2,7 @@
 <%layout('layout/boilerplate')%>
 <div class="row">
     <h1 class="text-center">Edit campground</h1>
-    <div class="col-6 offset-3">
+    <div class="col-md-6 offset-3">
         <form novalidate action="/campgrounds/<%=camp._id%>?_method=PUT" class="check-validation" method="post" enctype="multipart/form-data">
   
     <div class="input-group mb-3">
@@ -69,7 +69,7 @@
     </form></div>
     <div class="col">
     <form action="/campgrounds/<%=camp._id%>?_method=DELETE" method="post">
-        <button class="btn btn-sm btn-danger mb-3">delete camp</button>
+        <button class="btn btn-sm btn-danger mb-3">Delete Camp</button>
     </form>
   </div>
 </div>
