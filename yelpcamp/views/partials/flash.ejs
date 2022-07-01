@@ -1,0 +1,28 @@
+
+<% if(success && success.length ){ %>
+<div class="alert alert-warning alert-dismissible fade show " role="alert">
+  <strong>!!! </strong><%=success%>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+  </button>
+</div>
+  <% }%>
+
+  
+
+
+  
+<% if(error && error.length ){ %>
+  
+  <% setTimeout( function(){"document.getElementById('errorMessage').style.display='none';"}, 20)%> 
+    <div id="errorMessage"class="alert alert-danger alert-dismissible fade show " role="alert">
+      <strong>!!! </strong><%=error%>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+       
+      </button>
+    </div>
+   
+
+
+    </div>
+    
+      <% }%>

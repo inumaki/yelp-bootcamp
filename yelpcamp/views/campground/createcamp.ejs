@@ -1,0 +1,52 @@
+<%layout('layout/boilerplate')%>
+    <div class="row">
+<h1 class="text-center">New campground</h1>
+<div class="col-6 offset-3">
+<form action="/campgrounds" novalidate  method="post" class="check-validation" enctype="multipart/form-data">
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1">@</span>
+<input type="text" class="form-control" name="title" required placeholder="Title" aria-describedby="basic-addon1">
+<div id="validationServer05Feedback" class="invalid-feedback">
+  Please provide a title
+</div>
+</div>
+
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Price(INR)</span>
+    <input type="text" name="price" class="form-control" required  aria-label="Amount (to the nearest dollar)">
+    <div id="validationServer05Feedback" class="invalid-feedback">
+      Enter the price
+    </div>
+  </div>
+
+<div class="input-group mb-3">
+
+  <span class="input-group-text" id="basic-addon3">Image Url</span>
+  <input type="file" name="image" class="form-control" id="basic-url" aria-describedby="basic-addon3" multiple >
+</div> 
+
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Location</span>
+    <input type="text" name="location" class="form-control" aria-label="Location">
+   
+  </div>
+  
+<div class="input-group mb-3">
+    <span class="input-group-text">Description</span>
+    <input type="text" name="description" class="form-control" aria-label="Description">
+   
+  </div>
+
+
+<div class="mb-3">
+<button class="btn btn-primary">Add Campground</button>
+
+</div>
+</form>
+
+</div>
+
+</div>
+
