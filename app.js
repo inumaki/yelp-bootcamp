@@ -40,7 +40,7 @@ const ExpressMongoSanitize = require('express-mongo-sanitize');//for no sql inje
 //const {MongoStore}= require('connect-mongo')
 const secret = process.env.secret || 'thisismysecret'
 const MongoDBStore = require('connect-mongo')
-
+const port = process.env.PORT || 3000
 
 //const helmet= require('helmet')
 //----------------------------------
@@ -134,8 +134,8 @@ next()
 })
 
 
-app.listen(3000,()=>{
-console.log('started listening at port 3000')
+app.listen(port,()=>{
+console.log(`started listening at port ${port}`)
 //-----------------------------------------------
 })
 //-------------------------------------------------------

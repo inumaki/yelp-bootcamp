@@ -1,4 +1,10 @@
 {
+
+"name":"yelpcampground",
+"main":"app.js",
+"scripts": {"start": "node app.js"},
+
+
   "dependencies": {
     "cloudinary": "^1.30.0",
     "connect-flash": "^0.1.1",
